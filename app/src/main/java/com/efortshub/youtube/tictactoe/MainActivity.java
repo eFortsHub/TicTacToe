@@ -4,14 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.efortshub.youtube.tictactoe.databinding.ActivityMainBinding;
+import com.efortshub.youtube.tictactoe.databinding.DialogSetPayersNameBinding;
 
 import org.w3c.dom.Text;
 
@@ -21,8 +24,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
-    String player1 = "Player 1";
-    String player2 = "Player 2";
+    String player1;
+    String player2 ;
     PlayerTurn playerTurn;
     String gameSymbolPlayerOne = "X";
     String gameSymbolPlayerTwo = "O";
@@ -38,21 +41,71 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        player1 = getIntent().getStringExtra("p1");
+        player2 = getIntent().getStringExtra("p2");
+
+
+        if (player1==null || player2==null){
+
+            showAlertDialog();
+
+        }else startGame();
 
 
 
 
+    }
 
+    private void showAlertDialog() {
+        DialogSetPayersNameBinding spb = DialogSetPayersNameBinding.inflate(getLayoutInflater(), null, false);
+        AlertDialog alertDialog;
+        AlertDialog.Builder b = new AlertDialog.Builder(MainActivity.this);
+        b.setView(spb.getRoot());
+        b.setCancelable(false);
+        alertDialog = b.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.transparent);
+
+        spb.btnSetPlayer.setOnClickListener(view -> {
+
+            String playerOne = spb.tiePlayerOne.getText().toString();
+            String playerTwo = spb.tiePlayerTwo.getText().toString();
+
+            if (playerOne.trim().isEmpty() || playerTwo.trim().isEmpty()){
+                Toast.makeText(MainActivity.this, "Please set player name", Toast.LENGTH_SHORT).show();
+            }else {
+                this.player1 = playerOne;
+                this.player2 = playerTwo;
+                if (alertDialog!=null) if (alertDialog.isShowing()) alertDialog.dismiss();
+                startGame();
+            }
+
+
+        });
+
+        alertDialog.show();
+
+
+
+    }
+
+    private void startGame() {
 
 
         playerTurn = PlayerTurn.PLAYER_ONE;
 
+        binding.tvTurn.setText(player1);
+
+
         binding.btnResetGame.setOnClickListener((v)->{
-            recreate();
+            Intent i = new Intent(MainActivity.this, MainActivity.class);
+            i.putExtra("p1", player1);
+            i.putExtra("p2", player2);
+            startActivity(i);
+            finish();
+
         });
 
         initializeListener(binding.btn1, binding.btn2, binding.btn3, binding.btn4, binding.btn5, binding.btn6, binding.btn7, binding.btn8, binding.btn9);
-
 
 
 

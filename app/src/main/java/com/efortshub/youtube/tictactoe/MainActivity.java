@@ -5,6 +5,7 @@ import androidx.core.content.ContextCompat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,7 @@ import org.w3c.dom.Text;
 import java.lang.annotation.Repeatable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by H. Bappi on  12:08 PM 9/13/21.
@@ -37,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     PlayerTurn playerTurn;
     String gameSymbolPlayerOne = "X";
     String gameSymbolPlayerTwo = "O";
+    MediaPlayer mpClicked, mpError, mpWinner;
+    private boolean isGameOver = false;
 
     enum PlayerTurn{
         PLAYER_ONE,
@@ -48,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        isGameOver = false;
+         mpClicked = MediaPlayer.create(MainActivity.this, R.raw.click);
+         mpError = MediaPlayer.create(MainActivity.this, R.raw.click_error);
+         mpWinner = MediaPlayer.create(MainActivity.this, R.raw.game_over);
+
 
         player1 = getIntent().getStringExtra("p1");
         player2 = getIntent().getStringExtra("p2");
@@ -98,10 +107,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void startGame() {
 
-
         playerTurn = PlayerTurn.PLAYER_ONE;
 
-        binding.tvTurn.setText(player1);
+        binding.tvPlayerOne.setText(player1);
+        binding.tvPlayerTwo.setText(player2);
+
+       // binding.tvTurn.setText(player1);
 
 
         binding.btnResetGame.setOnClickListener((v)->{
@@ -124,9 +135,21 @@ public class MainActivity extends AppCompatActivity {
         for (TextView btn: btns){
             btn.setOnClickListener(view -> {
 
-                if (binding.tvWinner.getText().toString().equals("N/A")) {
+                if (!isGameOver) {
                     gameClicked(btns, btn);
+
+                    if (mpClicked.isPlaying()){
+                        mpClicked.stop();
+                        mpClicked.seekTo(0);
+                    }
+                    mpClicked.start();
                 }else {
+
+                    if (mpError.isPlaying()){
+                        mpError.stop();
+                        mpError.seekTo(0);
+                    }
+                    mpError.start();
                     Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_matches);
                     binding.btnResetGame.startAnimation(animation);
                     binding.btnResetGame.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_black_clicked));
@@ -162,12 +185,12 @@ public class MainActivity extends AppCompatActivity {
             case PLAYER_ONE:
                 btn.setText(gameSymbolPlayerOne);
                 playerTurn = PlayerTurn.PLAYER_TWO;
-                binding.tvTurn.setText(player2);
+               // binding.tvTurn.setText(player2);
                 break;
             case PLAYER_TWO:
                 btn.setText(gameSymbolPlayerTwo);
                 playerTurn = PlayerTurn.PLAYER_ONE;
-                binding.tvTurn.setText(player1);
+               // binding.tvTurn.setText(player1);
 
                 break;
             default:
@@ -181,39 +204,110 @@ public class MainActivity extends AppCompatActivity {
         int[] condition6 = {3,6,9};
         int[] condition7 = {1,5,9};
         int[] condition8 = {3,5,7};
-        String result1 = checkCondition(condition1, btns);
-        String result2 = checkCondition(condition2, btns);
-        String result3 = checkCondition(condition3, btns);
-        String result4 = checkCondition(condition4, btns);
-        String result5 = checkCondition(condition5, btns);
-        String result6 = checkCondition(condition6, btns);
-        String result7 = checkCondition(condition7, btns);
-        String result8 = checkCondition(condition8, btns);
+
+
+        checkCondition(condition1, btns);
+        checkCondition(condition2, btns);
+        checkCondition(condition3, btns);
+        checkCondition(condition4, btns);
+        checkCondition(condition5, btns);
+        checkCondition(condition6, btns);
+        checkCondition(condition7, btns);
+        checkCondition(condition8, btns);
+
+        /*
         if (!result1.isEmpty()){
-            binding.tvWinner.setText(result1);
+            if (result1.equals(player1)){
+                binding.llBcPlayerOne.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_black_clicked));
+            }else if (result1.equals(player2)){
+
+                binding.llBgPlayerTwo.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_black_clicked));
+            }
 
         }else if (!result2.isEmpty()){
-            binding.tvWinner.setText(result2);
+            if (result2.equals(player1)){
+
+                binding.llBcPlayerOne.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_black_clicked));
+        }else if (result2.equals(player2)){
+                binding.llBgPlayerTwo.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_black_clicked));
+
+        }
+
 
         }else if (!result3.isEmpty()){
-            binding.tvWinner.setText(result3);
+            if (result3.equals(player1)){
+
+                binding.llBcPlayerOne.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_black_clicked));
+            }else if (result3.equals(player2)){
+                binding.llBgPlayerTwo.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_black_clicked));
+
+            }
+
 
         }else if (!result4.isEmpty()){
-            binding.tvWinner.setText(result4);
+            if (result4.equals(player1)){
+
+                binding.llBcPlayerOne.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_black_clicked));
+            }else if (result4.equals(player2)){
+                binding.llBgPlayerTwo.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_black_clicked));
+
+            }
+
         }else if (!result5.isEmpty()){
-            binding.tvWinner.setText(result5);
+            if (result5.equals(player1)){
+
+                binding.llBcPlayerOne.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_black_clicked));
+            }else if (result5.equals(player2)){
+                binding.llBgPlayerTwo.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_black_clicked));
+
+            }
+
 
         }else if (!result6.isEmpty()){
-            binding.tvWinner.setText(result6);
+            if (result6.equals(player1)){
+                binding.llBcPlayerOne.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_black_clicked));
+
+            }else if (result6.equals(player2)){
+                binding.llBgPlayerTwo.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_black_clicked));
+
+            }
+
 
         }else if (!result7.isEmpty()){
-            binding.tvWinner.setText(result7);
+            if (result7.equals(player1)){
+                binding.llBcPlayerOne.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_black_clicked));
+
+            }else if (result7.equals(player2)){
+                binding.llBgPlayerTwo.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_black_clicked));
+
+            }
+
         }else if (!result8.isEmpty()){
-            binding.tvWinner.setText(result8);
+            if (result8.equals(player1)){
+                binding.llBcPlayerOne.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_black_clicked));
+
+            }else if (result8.equals(player2)){
+                binding.llBgPlayerTwo.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_black_clicked));
+
+            }
+
 
 
         }
-/*        if (!binding.tvWinner.getText().toString().equals("N/A")){
+
+        */
+
+
+        /*
+        if (!binding.tvWinner.getText().toString().equals("N/A")){
+
+            if (mpWinner.isPlaying()){
+                mpWinner.stop();
+                mpWinner.seekTo(0);
+            }
+            mpWinner.start();
+
+          *//*
             new AlertDialog.Builder(MainActivity.this)
             .setTitle("Winner Found")
             .setMessage(binding.tvWinner.getText().toString()+" is winner.")
@@ -227,11 +321,13 @@ public class MainActivity extends AppCompatActivity {
             .setCancelable(false)
                     .create().show();
 
-        }*/
+            *//*
 
+        }
+*/
 
     }
-    private String checkCondition(int[] condition, TextView[] btns) {
+    private void checkCondition(int[] condition, TextView[] btns) {
         String result = "";
         List<TextView> tvlist = new ArrayList<>();
 
@@ -244,6 +340,12 @@ public class MainActivity extends AppCompatActivity {
         Log.d("hhhh", "checkCondition: "+result);
 
         if (result.equals("XXX")){
+            isGameOver = true;
+            if (mpWinner.isPlaying()){
+                mpWinner.stop();
+                mpWinner.seekTo(0);
+            }
+            mpWinner.start();
             Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_matches);
 
             for (TextView v: tvlist) {
@@ -254,10 +356,21 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
-            return player1;
+            binding.llBcPlayerOne.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_black_clicked));
+
+
+
+            setGameOverView(PlayerTurn.PLAYER_ONE);
+
+
         }else if (result.equals("OOO")){
+            isGameOver = true;
+            if (mpWinner.isPlaying()){
+                mpWinner.stop();
+                mpWinner.seekTo(0);
+            }
+            mpWinner.start();
             Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_matches);
-
             for (TextView v: tvlist) {
                 v.startAnimation(animation);
 
@@ -266,10 +379,22 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
+                binding.llBgPlayerTwo.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_black_clicked));
 
 
-            return player2;
-        }else return "";
+            setGameOverView(PlayerTurn.PLAYER_TWO);
+
+
+        }
+
+    }
+
+    private void setGameOverView(PlayerTurn player) {
+
+
+
+
+
 
     }
 }

@@ -3,7 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable/bg_blac_clicked.xml" value="0.2361111111111111" />
+        <entry key="app/src/main/res/drawable/bg_blac_clickedk.xml" value="0.2490740740740741" />
+        <entry key="app/src/main/res/drawable/bg_black.xml" value="0.334375" />
+        <entry key="app/src/main/res/drawable/bg_black_clicked.xml" value="0.2361111111111111" />
+        <entry key="app/src/main/res/drawable/bg_black_disabled.xml" value="0.2361111111111111" />
+        <entry key="app/src/main/res/drawable/bg_clicable_black.xml" value="0.2490740740740741" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/dialog_set_payers_name.xml" value="0.22" />
       </map>
     </option>
   </component>

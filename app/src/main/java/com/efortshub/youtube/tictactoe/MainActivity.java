@@ -1,13 +1,23 @@
 package com.efortshub.youtube.tictactoe;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.efortshub.youtube.tictactoe.databinding.ActivityMainBinding;
+
+import org.w3c.dom.Text;
+
+import java.lang.annotation.Repeatable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
@@ -28,6 +38,13 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+
+
+
+
+
+
+
         playerTurn = PlayerTurn.PLAYER_ONE;
 
         binding.btnResetGame.setOnClickListener((v)->{
@@ -45,10 +62,39 @@ public class MainActivity extends AppCompatActivity {
 
         for (TextView btn: btns){
             btn.setOnClickListener(view -> {
-                gameClicked(btns, btn);
+
+                if (binding.tvWinner.getText().toString().equals("N/A")) {
+                    gameClicked(btns, btn);
+                }else {
+                    Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_matches);
+                    binding.btnResetGame.startAnimation(animation);
+                    binding.btnResetGame.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_black_clicked));
+
+                    animation.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            binding.btnResetGame.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_clicable_black));
+
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+
+                        }
+                    });
+
+                }
+
+
             });
         }
-
     }
     private void gameClicked(TextView[] btns, TextView btn) {
         switch (playerTurn){
@@ -82,7 +128,6 @@ public class MainActivity extends AppCompatActivity {
         String result6 = checkCondition(condition6, btns);
         String result7 = checkCondition(condition7, btns);
         String result8 = checkCondition(condition8, btns);
-
         if (!result1.isEmpty()){
             binding.tvWinner.setText(result1);
 
@@ -105,8 +150,9 @@ public class MainActivity extends AppCompatActivity {
         }else if (!result8.isEmpty()){
             binding.tvWinner.setText(result8);
 
+
         }
-        if (!binding.tvWinner.getText().toString().equals("N/A")){
+/*        if (!binding.tvWinner.getText().toString().equals("N/A")){
             new AlertDialog.Builder(MainActivity.this)
             .setTitle("Winner Found")
             .setMessage(binding.tvWinner.getText().toString()+" is winner.")
@@ -120,22 +166,47 @@ public class MainActivity extends AppCompatActivity {
             .setCancelable(false)
                     .create().show();
 
-        }
+        }*/
 
 
     }
     private String checkCondition(int[] condition, TextView[] btns) {
         String result = "";
+        List<TextView> tvlist = new ArrayList<>();
 
         for (int i: condition){
-           result = result.concat( btns[i-1].getText().toString());
+            TextView tv = btns[i-1];
+           result = result.concat( tv.getText().toString());
+           tvlist.add(tv);
         }
 
         Log.d("hhhh", "checkCondition: "+result);
 
         if (result.equals("XXX")){
+            Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_matches);
+
+            for (TextView v: tvlist) {
+                v.startAnimation(animation);
+
+                v.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_black_clicked));
+                v.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.black));
+
+            }
+
             return player1;
         }else if (result.equals("OOO")){
+            Animation animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_matches);
+
+            for (TextView v: tvlist) {
+                v.startAnimation(animation);
+
+                v.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_black_clicked));
+                v.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.black));
+
+            }
+
+
+
             return player2;
         }else return "";
 

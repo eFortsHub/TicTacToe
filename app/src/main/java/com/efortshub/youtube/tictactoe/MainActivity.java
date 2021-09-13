@@ -22,6 +22,14 @@ import java.lang.annotation.Repeatable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Created by H. Bappi on  12:08 PM 9/13/21.
+ * Contact email:
+ * contact@efortshub.com
+ * bappi@efortshub.com
+ * contact.efortshub@gmail.com
+ * Copyright (c) 2021 eFortsHub . All rights reserved.
+ **/
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     String player1;

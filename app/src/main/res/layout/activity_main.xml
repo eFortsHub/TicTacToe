@@ -275,7 +275,7 @@
         android:paddingTop="12dp"
         android:paddingEnd="16dp"
         android:paddingBottom="12dp"
-        android:text="Reset game"
+        android:text="Play Again"
         android:textAllCaps="true"
         android:textColor="@color/white"
         android:textSize="16sp"
@@ -288,7 +288,7 @@
 
     <androidx.appcompat.widget.LinearLayoutCompat
 
-        android:id="@+id/ll_bc_player_one"
+        android:id="@+id/ll_bg_player_one"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"

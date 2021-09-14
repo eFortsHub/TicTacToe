@@ -7,8 +7,10 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
@@ -61,6 +63,24 @@ public class MainActivity extends AppCompatActivity {
         player1 = getIntent().getStringExtra("p1");
         player2 = getIntent().getStringExtra("p2");
 
+        binding.btnShareApp.setOnClickListener(view -> {
+            String playStoreUrl = "https://play.google.com/store/apps/details?id="+getApplication().getPackageName();
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("text/*");
+            i.putExtra(Intent.EXTRA_TEXT, "Hi there, Please install this "+getResources().getString(R.string.app_name)+" App and enjoy. download link is here: "+playStoreUrl);
+            i.putExtra(Intent.EXTRA_SUBJECT, "eFortsHub Game");
+            startActivity(Intent.createChooser(i, "Open via"));
+        });
+
+
+        binding.btnWatchVideoTutorial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(Intent.createChooser(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=GgtoHVGOY7k&list=PLMOClCxXHc0MQnFIlaL32slojc-_DwnT9&ab_channel=eFortsHub")), "Open via"));
+
+            }
+        });
 
         if (player1==null || player2==null){
 

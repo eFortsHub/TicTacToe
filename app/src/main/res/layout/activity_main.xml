@@ -539,10 +539,35 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btn_share_app"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:background="@drawable/bg_clicable_black"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="8dp"
+        android:src="@drawable/ic_baseline_share_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="8dp"
+        app:tint="@color/white" />
 
 
 
-
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btn_watch_video_tutorial"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:background="@drawable/bg_clicable_black"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="8dp"
+        android:src="@drawable/ic_baseline_video_library_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="8dp"
+        app:tint="@color/white" />
 
 
 

@@ -10,8 +10,9 @@
         <entry key="app/src/main/res/drawable/bg_black_disabled.xml" value="0.2361111111111111" />
         <entry key="app/src/main/res/drawable/bg_clicable_black.xml" value="0.2490740740740741" />
         <entry key="app/src/main/res/drawable/bg_player_turn.xml" value="0.2759259259259259" />
+        <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.22135416666666666" />
         <entry key="app/src/main/res/drawable/transparent.xml" value="0.2361111111111111" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.12" />
         <entry key="app/src/main/res/layout/dialog_set_payers_name.xml" value="0.22" />
       </map>
     </option>
